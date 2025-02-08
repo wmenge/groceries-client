@@ -28,15 +28,15 @@ var resource = {
         }).then(
             response => {
                 // todo: move to separate event handler
-                /*if(response.status==401) {
-                    window.location = configuration.baseUrl + configuration.loginUrl;
+                if(response.status==401) {
+                    window.location = '/login';
                     let rejectedPromise = new Promise(function(res, rej) { rej(); });
                     //rejectedPromise.reject();
                     return rejectedPromise;
                 }
 
                 // todo: move to separate event handler
-                if (response.status >= 300) {
+                /*if (response.status >= 300) {
                     response.text().then(text => {
                         console.log(text);
                         notificationHelper.danger(`${response.status}: ${response.statusText} ${text}`);
@@ -66,7 +66,7 @@ var resource = {
             }
         } else {
             return {
-                "Content-Type": "application/json"
+                "Accept": "application/json"
             }
         }
     }

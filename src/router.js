@@ -6,10 +6,12 @@ import ShoppingLists from './components/ShoppingLists/ShoppingLists.vue'
 import ShoppingListDetail from './components/ShoppingLists/ShoppingListDetail.vue'
 //import ShoppingListEntries from './components/ShoppingListEntries/ShoppingListEntries.vue'
 import ShoppingListEntryDetail from './components/ShoppingListEntries/ShoppingListEntryDetail.vue'
+import Login from './components/Login.vue'
 
 
 const routes = [
   { path: '/', component: ShoppingLists },
+  { path: '/login', component: Login },
   { path: '/groceries', component: GroceryList },
   { path: '/groceries/new', component: GroceryDetail },
   { path: '/groceries/:id', component: GroceryDetail },
