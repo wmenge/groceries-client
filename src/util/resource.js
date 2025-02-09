@@ -1,6 +1,6 @@
 // TODO: use vue style configuration
 var configuration = {
-    baseUrl: 'http://localhost:8000',
+    baseUrl: import.meta.env.VITE_API_URL,
     apiUrl: '/api'
 }
 

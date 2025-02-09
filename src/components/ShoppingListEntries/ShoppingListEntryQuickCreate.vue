@@ -11,7 +11,7 @@ const shoppingListEntry = ref({ quantity: 1, grocery: { name: "" } });
 onMounted(() => {
 
   Autocomplete.init("input.autocomplete", {
-    server: 'http://localhost:8001/api/groceries',
+    server: import.meta.env.VITE_API_URL + '/api/groceries',
     liveServer: true,
     valueField: 'name',
     labelField: 'name',

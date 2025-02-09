@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+  
 </script>
 
 <template>
@@ -45,6 +45,7 @@
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form> -->
     </div>
+    
   </div>
 </nav>
   
@@ -55,8 +56,6 @@
     <div class="container mt-3">
       
       <RouterView />
-
-      <!-- {{ $route.fullPath }} -->
 
   </div>
   </main>
