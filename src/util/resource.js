@@ -18,9 +18,26 @@ var resource = {
         return this.fetch(resource, "DELETE", null);
     },
     fetch(resource, method, body) {
+        
+        var headers = this.headers(body)
+
+        if (method != "GET") {
+            // try to get laravel csrf token from cookie
+            var csrfToken = decodeURIComponent(document.cookie)
+                .split(';')
+                .filter(cookie => cookie.startsWith("XSRF-TOKEN="))
+                .map(cookie => cookie.replace("XSRF-TOKEN=", ""))[0];
+                
+            if (csrfToken) {
+                headers["X-XSRF-TOKEN"] = csrfToken;
+            }
+        }
+
+        console.log(headers);
+        
         console.debug(resource, method, body);
         return fetch(configuration.baseUrl + configuration.apiUrl + resource, {
-            "headers": this.headers(body),
+            "headers": headers,
             "method": method,
             "body": ((body == null) ? null : JSON.stringify(body)),
             "mode": "cors",
