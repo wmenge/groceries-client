@@ -65,7 +65,7 @@ async function fetchData(id) {
   <form @submit.prevent="saveData">
 
     <div class="input-group mb-3">
-      <input type="name" class="form-control" id="name" v-model="shoppingList.name" placeholder="Shopping List Name">
+      <input type="name" class="form-control" id="name" v-model="shoppingList.name" placeholder="Shopping List Name" autocapitalize="sentences" >
       <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i></button>
     </div>
 
