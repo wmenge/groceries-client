@@ -1,8 +1,9 @@
 <script setup lang="js">
 
 import { ref, onMounted } from 'vue'
-import { shoppingListEntriesResource } from '../../util/entityResource.js';
-import Autocomplete from "bootstrap5-autocomplete";
+import { shoppingListEntriesResource, groceryResource } from '../../util/entityResource.js';
+import Autocomplete from '@trevoreyre/autocomplete-vue'
+import '@trevoreyre/autocomplete-vue/dist/style.css'
 
 const emit = defineEmits(['entryModified'])
 const props = defineProps(['shoppingList', 'shoppingListEntry']);
@@ -11,28 +12,18 @@ const shoppingListEntry = ref({ quantity: 1, grocery: { name: "" } });
 onMounted(() => {
 
   if (props.shoppingListEntry) {
-    shoppingListEntry.value = props.shoppingListEntry;
+    shoppingListEntry.value = props.shoppingListEntry; 
   }
 
-  Autocomplete.init("input.autocomplete", {
-    server: import.meta.env.VITE_API_URL + '/api/groceries',
-    liveServer: true,
-    valueField: 'name',
-    labelField: 'name',
-    fullWidth: true,
-    updateOnSelect: true,
-    autoselectFirst: false,
-    preventBrowserAutocomplete: true,
-    onSelectItem: updateName,
-  });
 })
 
-// silly hack to make sure that name provided by autocomplete is set in model
-function updateName(name) {
-  shoppingListEntry.value.grocery.name = name.value;
-}
-
 async function saveData() {
+
+  // bad hack as we cant vmodel on the autocomplete control
+  if (shoppingListEntry.value.grocery.name === "") {
+    shoppingListEntry.value.grocery.name = document.getElementsByClassName('autocomplete-input')[0].value;
+  }
+
   let saveShoppingListEntryDto = {
     id: shoppingListEntry.value.id,
     quantity: shoppingListEntry.value.quantity,
@@ -47,6 +38,17 @@ async function saveData() {
 async function deleteData() {
   await shoppingListEntriesResource.remove(shoppingListEntry.value.shopping_list_id, shoppingListEntry.value);
   emit('entryModified', shoppingListEntry.value);
+}
+
+async function search(input) {
+  if (!input) return [];
+  var result = await groceryResource.getAll({ query: input, sort: 'name'});
+  return result.map(g => g.name)
+}
+
+function handleSubmit(name) {
+  console.log(name);
+  shoppingListEntry.value.grocery.name = name;
 }
 
 </script>
@@ -71,7 +73,10 @@ async function deleteData() {
       <div class="col">
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Grocery</label>
-          <input type="name" class="form-control autocomplete" id="groceryName" v-model="shoppingListEntry.grocery.name" placeholder="Grocery">
+          <!-- <input type="name" class="form-control autocomplete" id="groceryName" v-bind:value="shoppingListEntry.grocery.name" placeholder="Grocery"> -->
+           <!-- todo: wrap autocomplete in custom component -->
+          <autocomplete :search="search" @submit="handleSubmit" v-bind:defaultValue="shoppingListEntry.grocery.name"></autocomplete>
+
         </div>
       </div>
     </div>

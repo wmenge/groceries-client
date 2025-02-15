@@ -1,35 +1,20 @@
 <script setup lang="js">
 
 import { ref, onMounted } from 'vue'
-import { shoppingListResource, shoppingListEntriesResource } from '../../util/entityResource.js';
-import Autocomplete from "bootstrap5-autocomplete";
+import { shoppingListResource, shoppingListEntriesResource, groceryResource } from '../../util/entityResource.js';
+import Autocomplete from '@trevoreyre/autocomplete-vue'
+import '@trevoreyre/autocomplete-vue/dist/style.css'
 
 const emit = defineEmits(['entryModified', 'listModified'])
 const props = defineProps(['shoppingList']);
 const shoppingListEntry = ref({ quantity: 1, grocery: { name: "" } });
 
-onMounted(() => {
-
-  Autocomplete.init("input.autocomplete", {
-    server: import.meta.env.VITE_API_URL + '/api/groceries',
-    liveServer: true,
-    valueField: 'name',
-    labelField: 'name',
-    fullWidth: true,
-    updateOnSelect: true,
-    autoselectFirst: false,
-    preventBrowserAutocomplete: true,
-    onSelectItem: updateName,
-  });
-})
-
-// silly hack to make sure that name provided by autocomplete is set in model
-function updateName(name) {
-  console.log(name);
-  shoppingListEntry.value.grocery.name = name.value;
-}
-
 async function saveData() {
+
+  // bad hack as we cant vmodel on the autocomplete control
+  if (shoppingListEntry.value.grocery.name === "") {
+    shoppingListEntry.value.grocery.name = document.getElementsByClassName('autocomplete-input')[0].value;
+  }
 
   // cleanup
   let shoppingList = null;
@@ -61,29 +46,69 @@ async function saveData() {
   shoppingListEntry.value.grocery.name = "";
 }
 
+async function search(input) {
+  if (!input) return [];
+  var result = await groceryResource.getAll({ query: input, sort: 'name'});
+  return result.map(g => g.name)
+}
+
+function handleSubmit(name) {
+  console.log(name);
+  shoppingListEntry.value.grocery.name = name;
+}
+
 </script>
 
 <template>
 
   <form @submit.prevent="saveData">
 
-    <div class="input-group mb-3">
-      <button :disabled="shoppingListEntry.quantity < 2" @click="shoppingListEntry.quantity--" class="btn btn-outline-primary" type="button" id="button-addon1">-</button>
-      <input type="name" class="form-control" id="quantity" v-model="shoppingListEntry.quantity" placeholder="Quantity">
-      <button @click="shoppingListEntry.quantity++" class="btn btn-outline-primary" type="button" id="button-addon1">+</button>
-      <input type="name" class="form-control autocomplete" id="groceryName" v-model="shoppingListEntry.grocery.name" placeholder="Grocery">
+    <div class="myflex mb-3">
+
+      <div class="input-group">
+        <button :disabled="shoppingListEntry.quantity < 2" @click="shoppingListEntry.quantity--" class="btn btn-outline-primary" type="button" id="button-addon1">-</button>
+        <input type="name" class="form-control" id="quantity" v-model="shoppingListEntry.quantity" placeholder="Quantity">
+        <button @click="shoppingListEntry.quantity++" class="btn btn-outline-primary" type="button" id="button-addon1">+</button>
+      </div>
+
+      <!-- todo: wrap autocomplete in custom component -->
+      <autocomplete class="ms-2 me-2" :search="search" @submit="handleSubmit"></autocomplete>
+
       <button type="submit" class="btn btn-primary"><i class="bi bi-cart"></i></button>
+
     </div>
 
   </form>
 
 </template>
 
+<style>
+
+/* Non scoped */
+  .autocomplete-input {
+    background-color: white;
+    background-image: none;
+    padding: .375rem .75rem;
+  }
+
+</style>
+
 <style scoped>
 
+.myflex {
+  display: flex;
+  flex-wrap: nowrap;
+} 
+
+.input-group {
+  width: 8rem;
+  flex-wrap: nowrap;
+}
+
   input#quantity {
-    flex: 0 0 3rem;
+    /* flex: 0 0 3rem; */
     text-align: center;
   }
+
 
 </style>
