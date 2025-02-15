@@ -11,7 +11,7 @@ onMounted(() => {
 
 async function fetchData() {
     try {
-    groceriesList.value = await groceryResource.getAll();
+    groceriesList.value = await groceryResource.getAll({ sort: 'name' });
     console.log(groceriesList.value);
   } catch (err) {
     //error.value = err.toString()

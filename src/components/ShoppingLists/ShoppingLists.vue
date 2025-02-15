@@ -9,10 +9,11 @@ onMounted(() => {
 })
 
 async function fetchData() {
+  console.log("fetch data!")
     try {
-      shoppingLists.value = await shoppingListResource.getAll();
+      shoppingLists.value = await shoppingListResource.getAll({ sort: '-created_at' });
   } catch (err) {
-    //error.value = err.toString()
+    console.log(err.toString());
   } finally {
     //loading.value = false
   }

@@ -1,8 +1,9 @@
 import resource from '../util/resource.js'
+import queryString from '../util/queryString.js'
 
 // TODO: Use typescript
-function getAll() {
-    return resource.get(this.endpoint);
+function getAll(query) {
+    return resource.get(`${this.endpoint}${queryString(query)}`);
 };
 
 function get(id) {
