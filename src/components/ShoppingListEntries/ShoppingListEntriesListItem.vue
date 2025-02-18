@@ -18,6 +18,8 @@ async function changeStatus() {
   // Update only status (use patch?)
   let saveShoppingListEntryDto = {
     id: props.shoppingListEntry.id,
+    groceryName: props.shoppingListEntry.grocery.name, // not needed to give full object if we use a patch
+    quantity: props.shoppingListEntry.quantity, // not needed to give full object if we use a patch
     status: props.shoppingListEntry.status == 'open' ? 'closed' : 'open'
   };
 

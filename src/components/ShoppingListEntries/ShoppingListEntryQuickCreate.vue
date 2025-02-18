@@ -29,7 +29,8 @@ async function saveData() {
     
   let saveShoppingListEntryDto = {
     quantity: shoppingListEntry.value.quantity,
-    groceryName: shoppingListEntry.value.grocery.name
+    groceryName: shoppingListEntry.value.grocery.name,
+    status: 'open',
   };
 
   let result = await shoppingListEntriesResource.save(shoppingList.id, saveShoppingListEntryDto);
