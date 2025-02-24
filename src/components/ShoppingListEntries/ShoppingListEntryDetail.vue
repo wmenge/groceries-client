@@ -4,6 +4,7 @@ import { ref, onMounted } from 'vue'
 import { shoppingListEntriesResource, groceryResource } from '../../util/entityResource.js';
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
+import dayjs from 'dayjs';
 
 const emit = defineEmits(['entryModified'])
 const props = defineProps(['shoppingList', 'shoppingListEntry']);
@@ -52,6 +53,19 @@ function handleSubmit(name) {
   shoppingListEntry.value.grocery.name = name;
 }
 
+function formatDate(dateString) {
+  const date = dayjs(dateString);
+  // Then specify how you want your dates to be formatted
+  return date.format('dddd MMMM D, HH:mm');
+}
+
+function formatChange(obj) {
+  var result = Object.entries(obj).map(([k, v], i) => {
+    return `<strong>${k}</strong> set to "<strong>${v}</strong>"`
+  }).join(', ');
+  return result;
+}
+
 </script>
 
 <template>
@@ -91,6 +105,13 @@ function handleSubmit(name) {
     </div>
 
   </form>
+
+  <ul class="list-group"> 
+    <li class="list-unstyled" v-for="event in shoppingListEntry.events" :key="event.id">
+      <small class="text-body-secondary" v-if="event.type == 'CREATE'">Created by <strong>{{ event?.user?.name }}</strong> @ {{ formatDate(event?.time) }}</small>
+        <small class="text-body-secondary" v-if="event.type == 'UPDATE'">Modified by <strong>{{ event?.user?.name }}</strong> @ {{ formatDate(event?.time) }}: <span v-html="formatChange(event.changed)"></span></small>
+    </li>
+  </ul>
 
 </template>
 
