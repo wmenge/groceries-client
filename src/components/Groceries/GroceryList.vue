@@ -23,14 +23,17 @@ async function fetchData() {
 </script>
 
 <template>
+  <div>
 
-  <div class="container mb-3">
+  <!-- <div class="container mb-3">
     <RouterLink to="/groceries/new" class="btn btn-outline-dark" type="button"><i class="bi bi-plus-lg"></i></RouterLink>
-  </div>
+  </div> -->
 
   <ul class="list-group"> 
     <RouterLink v-for="grocery in groceriesList" :key="grocery.id" class="list-group-item" :to="`/groceries/${grocery.id}`">{{ grocery.name }}</RouterLink>
   </ul>
+
+</div>
 
 </template>
 

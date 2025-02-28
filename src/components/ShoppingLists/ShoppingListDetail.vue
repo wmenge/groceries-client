@@ -5,9 +5,10 @@ import { shoppingListResource } from '../../util/entityResource.js';
 import router from '../../router.js';
 import ShoppingListEntries from '../ShoppingListEntries/ShoppingListEntries.vue'
 import ShoppingListEntryQuickCreate from '../ShoppingListEntries/ShoppingListEntryQuickCreate.vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n() 
 const route = useRoute()
-
 const shoppingList = ref({ name: "" });
 
 onMounted(() => {
@@ -71,7 +72,7 @@ async function fetchData(id) {
 
   </form>
 
-  Add:
+  {{ $t("titles.add") }}:
   <ShoppingListEntryQuickCreate @entryModified="fetchData(route.params.id)" @listModified="updateList" :shoppingList="shoppingList"></ShoppingListEntryQuickCreate>
   <ShoppingListEntries @entryModified="fetchData(route.params.id)" :shoppingListEntries="shoppingList.entries"></ShoppingListEntries>
 

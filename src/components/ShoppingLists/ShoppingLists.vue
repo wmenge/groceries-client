@@ -34,6 +34,7 @@ function isClosed(shoppingList) {
 </script>
 
 <template>
+  <div>
 
   <div class="container mb-3">
     <RouterLink to="/shopping-lists/new" class="btn btn-outline-dark" type="button"><i class="bi bi-plus-lg"></i></RouterLink>
@@ -47,6 +48,7 @@ function isClosed(shoppingList) {
       </span>
     </RouterLink>
   </ul>
+</div>
 
 </template>
 

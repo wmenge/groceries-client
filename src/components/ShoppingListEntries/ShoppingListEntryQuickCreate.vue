@@ -4,7 +4,9 @@ import { ref, onMounted } from 'vue'
 import { shoppingListResource, shoppingListEntriesResource, groceryResource } from '../../util/entityResource.js';
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n() 
 const emit = defineEmits(['entryModified', 'listModified'])
 const props = defineProps(['shoppingList']);
 const shoppingListEntry = ref({ quantity: 1, grocery: { name: "" } });

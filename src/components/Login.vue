@@ -1,12 +1,15 @@
 <script setup lang="js">
   import.meta.env.VITE_API_URL
   const apiUrl = import.meta.env.VITE_API_URL
+  import { useI18n } from 'vue-i18n'
+
+  const { t } = useI18n() 
 </script>
 
 <template>
 
 <div class="jumbotron">
-  <h1 class="display-6">Please log in...</h1>
+  <h1 class="display-6">{{ $t("titles.login") }}:</h1>
   <hr class="my-4">
   <p class="lead">
     

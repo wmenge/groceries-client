@@ -61,7 +61,7 @@ function formatDate(dateString) {
 
 function formatChange(obj) {
   var result = Object.entries(obj).map(([k, v], i) => {
-    return `<strong>${k}</strong> set to "<strong>${v}</strong>"`
+    return `${k} set to "${v}"`
   }).join(', ');
   return result;
 }
@@ -76,7 +76,7 @@ function formatChange(obj) {
 
       <div class="col">
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Quantity</label>
+          <label for="exampleFormControlInput1" class="form-label">{{ $t("fieldnames.entry.quantity") }}</label>
           <div class="input-group mb-3">
             <button :disabled="shoppingListEntry.quantity < 2" @click="shoppingListEntry.quantity--" class="btn btn-outline-primary" type="button" id="button-addon1">-</button>
             <input type="name" class="form-control" id="quantity" v-model="shoppingListEntry.quantity" placeholder="Quantity">
@@ -87,7 +87,7 @@ function formatChange(obj) {
 
       <div class="col">
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Grocery</label>
+          <label for="exampleFormControlInput1" class="form-label">{{ $t("fieldnames.entry.grocery") }}</label>
           <!-- <input type="name" class="form-control autocomplete" id="groceryName" v-bind:value="shoppingListEntry.grocery.name" placeholder="Grocery"> -->
            <!-- todo: wrap autocomplete in custom component -->
           <autocomplete :search="search" @submit="handleSubmit" v-bind:defaultValue="shoppingListEntry.grocery.name"></autocomplete>
@@ -99,8 +99,8 @@ function formatChange(obj) {
     <div class="d-flex justify-content-end">
 
       <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save</button>
-        <button v-if="shoppingListEntry.id" type="button" @click="deleteData()" class="btn btn-danger"><i class="bi bi-trash"></i> Remove</button>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> {{ $t("buttons.save") }}</button>
+        <button v-if="shoppingListEntry.id" type="button" @click="deleteData()" class="btn btn-danger"><i class="bi bi-trash"></i> {{ $t("buttons.delete") }}</button>
       </div>
     </div>
 
@@ -108,8 +108,8 @@ function formatChange(obj) {
 
   <ul class="list-group"> 
     <li class="list-unstyled" v-for="event in shoppingListEntry.events" :key="event.id">
-      <small class="text-body-secondary" v-if="event.type == 'CREATE'">Created by <strong>{{ event?.user?.name }}</strong> @ {{ formatDate(event?.time) }}</small>
-        <small class="text-body-secondary" v-if="event.type == 'UPDATE'">Modified by <strong>{{ event?.user?.name }}</strong> @ {{ formatDate(event?.time) }}: <span v-html="formatChange(event.changed)"></span></small>
+      <small class="text-body-secondary" v-if="event.type == 'CREATE'">{{ $t('messages.created', { user: event?.user?.name, time: formatDate(event?.time) }) }}</small>
+        <small class="text-body-secondary" v-if="event.type == 'UPDATE'">{{ $t('messages.modified', { user: event?.user?.name, time: formatDate(event?.time), changes: formatChange(event.changed) }) }}</small>
     </li>
   </ul>
 
