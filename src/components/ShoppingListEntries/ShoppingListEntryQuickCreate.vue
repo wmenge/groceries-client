@@ -13,7 +13,7 @@ const shoppingListEntry = ref({ quantity: 1, grocery: { name: "" } });
 
 async function saveData() {
 
-  // bad hack as we cant vmodel on the autocomplete control
+  // bad hack 1: as we cant vmodel on the autocomplete control
   if (shoppingListEntry.value.grocery.name === "") {
     shoppingListEntry.value.grocery.name = document.getElementsByClassName('autocomplete-input')[0].value;
   }
@@ -47,6 +47,9 @@ async function saveData() {
   
   shoppingListEntry.value.quantity = 1;
   shoppingListEntry.value.grocery.name = "";
+
+  // bad hack 2: clear autocomplete control
+  document.getElementsByClassName('autocomplete-input')[0].value = '';
 }
 
 async function search(input) {
