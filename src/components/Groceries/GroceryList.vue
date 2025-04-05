@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { groceryResource } from '../../util/entityResource.js';
 
+const loading = ref(true);
 const groceriesList = ref(null)
 
 onMounted(() => {
@@ -10,30 +11,39 @@ onMounted(() => {
 })
 
 async function fetchData() {
-    try {
+  try {
+    loading.value = true;
     groceriesList.value = await groceryResource.getAll({ sort: 'name' });
     console.log(groceriesList.value);
   } catch (err) {
     //error.value = err.toString()
   } finally {
-    //loading.value = false
+    loading.value = false
   }
 }
 
 </script>
 
 <template>
-  <div>
+  <div class="wrapper container mt-3">
 
-  <!-- <div class="container mb-3">
-    <RouterLink to="/groceries/new" class="btn btn-outline-dark" type="button"><i class="bi bi-plus-lg"></i></RouterLink>
-  </div> -->
+    <div v-if="loading" class="position-absolute start-50 mt-1 spinner-container">
+      <div class="spinner-border text-primary" role="status"></div>
+    </div>
 
-  <ul class="list-group"> 
-    <RouterLink v-for="grocery in groceriesList" :key="grocery.id" class="list-group-item" :to="`/groceries/${grocery.id}`">{{ grocery.name }}</RouterLink>
-  </ul>
+    <div v-else-if="!loading">
 
-</div>
+      <!-- <div class="container mb-3">
+        <RouterLink to="/groceries/new" class="btn btn-outline-dark" type="button"><i class="bi bi-plus-lg"></i></RouterLink>
+      </div> -->
+
+      <ul class="list-group"> 
+        <RouterLink v-for="grocery in groceriesList" :key="grocery.id" class="list-group-item" :to="`/groceries/${grocery.id}`">{{ grocery.name }}</RouterLink>
+      </ul>
+
+    </div>
+
+  </div>
 
 </template>
 

@@ -43,22 +43,21 @@ async function fetchData(id) {
 </script>
 
 <template>
-  <div>
 
-  <!-- <h1>Grocery Detail</h1> -->
+  <div class="wrapper container mt-3">
 
-  <form @submit.prevent="saveData">
-  
-    <div class="mb-3">
-      <label for="exampleFormControlInput1" class="form-label">{{ $t("fieldnames.groceries.name") }}</label>
-      <input type="name" class="form-control" id="name" v-model="grocery.name" placeholder="Grocery Name">
-    </div>
-    <button type="submit" class="btn btn-primary">{{ $t("buttons.save") }}</button>
-    <button v-if="grocery.id" type="button" @click="deleteData()" class="btn btn-danger">{{ $t("buttons.delete") }}</button>
-  
-  </form>
+    <form @submit.prevent="saveData">
+    
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">{{ $t("fieldnames.groceries.name") }}</label>
+        <input type="name" class="form-control" id="name" v-model="grocery.name" placeholder="Grocery Name">
+      </div>
+      <button type="submit" class="btn btn-primary">{{ $t("buttons.save") }}</button>
+      <button v-if="grocery.id" type="button" @click="deleteData()" class="btn btn-danger">{{ $t("buttons.delete") }}</button>
+    
+    </form>
 
-</div>
+  </div>
 
 </template>
 

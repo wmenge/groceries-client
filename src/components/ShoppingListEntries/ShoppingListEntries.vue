@@ -1,11 +1,16 @@
 <script setup lang="js">
 
 import ShoppingListEntriesListItem from '../ShoppingListEntries/ShoppingListEntriesListItem.vue'
-const emit = defineEmits(['entryModified'])
+const emit = defineEmits(['entryModified', 'entryDeleted'])
 const props = defineProps(['shoppingListEntries']);
 
+// why not handle them here? we have the list?
 function handleEntryModified(entry) {
   emit('entryModified', entry);
+}
+
+function handleEntryDeleted(entry) {
+  emit('entryDeleted', entry);
 }
 
 </script>
@@ -13,7 +18,7 @@ function handleEntryModified(entry) {
 <template>
   <TransitionGroup class="list-group" name="list" tag="ul">
     <!-- <ul> -->
-      <ShoppingListEntriesListItem v-for="shoppingListEntry in props.shoppingListEntries" :key="shoppingListEntry.id" @entryModified="handleEntryModified" :shoppingListEntry="shoppingListEntry"></ShoppingListEntriesListItem>
+      <ShoppingListEntriesListItem v-for="shoppingListEntry in props.shoppingListEntries" :key="shoppingListEntry.id" @entryModified="handleEntryModified" @entryDeleted="handleEntryDeleted" :shoppingListEntry="shoppingListEntry"></ShoppingListEntriesListItem>
     <!-- </ul> -->
   </TransitionGroup>
 </template>

@@ -6,7 +6,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
 import dayjs from 'dayjs';
 
-const emit = defineEmits(['entryModified'])
+const emit = defineEmits(['entryModified', 'entryDeleted'])
 const props = defineProps(['shoppingList', 'shoppingListEntry']);
 const shoppingListEntry = ref({ quantity: 1, grocery: { name: "" } });
 
@@ -39,7 +39,7 @@ async function saveData() {
 
 async function deleteData() {
   await shoppingListEntriesResource.remove(shoppingListEntry.value.shopping_list_id, shoppingListEntry.value);
-  emit('entryModified', shoppingListEntry.value);
+  emit('entryDeleted', shoppingListEntry.value);
 }
 
 async function search(input) {

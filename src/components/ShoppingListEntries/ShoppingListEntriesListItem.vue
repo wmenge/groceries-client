@@ -3,7 +3,7 @@
 import ShoppingListEntryDetail from '../ShoppingListEntries/ShoppingListEntryDetail.vue'
 import { shoppingListEntriesResource } from '../../util/entityResource.js';
 import * as bootstrap from 'bootstrap'
-const emit = defineEmits(['entryModified'])
+const emit = defineEmits(['entryModified', 'entryDeleted'])
 const props = defineProps(['shoppingListEntry']);
 
 function handleEntryModified(entry) {
@@ -12,6 +12,10 @@ function handleEntryModified(entry) {
   myCollapse.toggle();
 
   emit('entryModified', entry);
+}
+
+function handleEntryDeleted(entry) {
+  emit('entryDeleted', entry);
 }
 
 async function changeStatus() {
@@ -51,7 +55,7 @@ async function changeStatus() {
     </div>
     <div class="collapse" :id="`collapseExample${props.shoppingListEntry.id}`">
       <hr/>
-      <ShoppingListEntryDetail @entryModified="handleEntryModified" :shoppingListEntry="props.shoppingListEntry"></ShoppingListEntryDetail>
+      <ShoppingListEntryDetail @entryModified="handleEntryModified" @entryDeleted="handleEntryDeleted" :shoppingListEntry="props.shoppingListEntry"></ShoppingListEntryDetail>
     </div>
   
   </a>

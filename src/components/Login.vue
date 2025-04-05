@@ -8,16 +8,18 @@
 
 <template>
 
-<div class="jumbotron">
-  <h1 class="display-6">{{ $t("titles.login") }}:</h1>
-  <hr class="my-4">
-  <p class="lead">
-    
-    <a class="btn btn-primary btn-lg" :href="`${ apiUrl }/auth/google/redirect`">Google</a> &nbsp;
-    <a class="btn btn-secondary btn-lg" :href="`${ apiUrl }/auth/github/redirect`">Github</a>
-    
-  </p>
-</div>
+  <div class="wrapper container mt-3">
+
+    <div class="jumbotron">
+      <h1 class="display-6">{{ $t("titles.login") }}:</h1>
+      <hr class="my-4">
+      <p class="lead">
+        <a class="btn btn-primary btn-lg" :href="`${ apiUrl }/auth/google/redirect`">Google</a> &nbsp;
+        <a class="btn btn-secondary btn-lg" :href="`${ apiUrl }/auth/github/redirect`">Github</a>
+      </p>
+    </div>
+
+  </div>
 
 </template>
 

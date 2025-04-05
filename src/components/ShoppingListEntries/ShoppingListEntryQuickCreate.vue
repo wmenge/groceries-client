@@ -1,6 +1,6 @@
 <script setup lang="js">
 
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, useTemplateRef } from 'vue'
 import { shoppingListResource, shoppingListEntriesResource, groceryResource } from '../../util/entityResource.js';
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
@@ -10,22 +10,30 @@ const { t } = useI18n()
 const emit = defineEmits(['entryModified', 'listModified'])
 const props = defineProps(['shoppingList']);
 const shoppingListEntry = ref({ quantity: 1, grocery: { name: "" } });
+const loading = ref(false);
+
+const autocompleteInput = useTemplateRef('autocompleteInput')
 
 async function saveData() {
 
+  loading.value = true;
+
   // bad hack 1: as we cant vmodel on the autocomplete control
   if (shoppingListEntry.value.grocery.name === "") {
-    shoppingListEntry.value.grocery.name = document.getElementsByClassName('autocomplete-input')[0].value;
+    shoppingListEntry.value.grocery.name = autocompleteInput.value.value;
   }
 
   // cleanup
   let shoppingList = null;
   let shoppingListCreated = false;
   
+  // replace with a backend deep create of list + entry
   if (props.shoppingList.id) {
     shoppingList = props.shoppingList;
   } else {
     shoppingList = await shoppingListResource.save(props.shoppingList);
+
+    //console.log(shoppingList);
     shoppingListCreated = true;
   }
     
@@ -40,16 +48,20 @@ async function saveData() {
   console.log(result);
 
   if (shoppingListCreated) {
-    emit('listModified', shoppingList);
+     shoppingList.entries = [ result ];
+     console.log(shoppingList);
+     emit('listModified', shoppingList);
   } else {
-    emit('entryModified', result);
+     emit('entryModified', result);
   }
   
   shoppingListEntry.value.quantity = 1;
   shoppingListEntry.value.grocery.name = "";
 
   // bad hack 2: clear autocomplete control
-  document.getElementsByClassName('autocomplete-input')[0].value = '';
+  autocompleteInput.value.value = '';
+
+  loading.value = false;
 }
 
 async function search(input) {
@@ -78,9 +90,12 @@ function handleSubmit(name) {
       </div>
 
       <!-- todo: wrap autocomplete in custom component -->
-      <autocomplete class="ms-2 me-2" :search="search" @submit="handleSubmit"></autocomplete>
+      <autocomplete ref="autocompleteInput" class="ms-2 me-2" :search="search" @submit="handleSubmit"></autocomplete>
 
-      <button type="submit" class="btn btn-primary"><i class="bi bi-cart"></i></button>
+      <button type="submit" class="btn btn-primary">
+        <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <i v-else-if="!loading" class="bi bi-cart"></i>
+      </button>
 
     </div>
 
