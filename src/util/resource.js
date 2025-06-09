@@ -1,3 +1,5 @@
+import { getCookie } from '../util/cookies.js'
+
 // TODO: use vue style configuration
 var configuration = {
     baseUrl: import.meta.env.VITE_API_URL,
@@ -22,11 +24,8 @@ var resource = {
         var headers = this.headers(body)
 
         if (method != "GET") {
-            // try to get laravel csrf token from cookie
-            var csrfToken = decodeURIComponent(document.cookie)
-                .split(';')
-                .filter(cookie => cookie.startsWith("XSRF-TOKEN="))
-                .map(cookie => cookie.replace("XSRF-TOKEN=", ""))[0];
+            // try to get laravel csrf token from cookie and add to reqeust header
+            var csrfToken = getCookie('XSRF-TOKEN');
                 
             if (csrfToken) {
                 headers["X-XSRF-TOKEN"] = csrfToken;

@@ -40,6 +40,7 @@ const i18n = createI18n({
       nl: {
         titles: {
           login: 'Inloggen',
+          logout: 'Uitloggen',
           appTitle: 'Boodschappen!',
           lists: 'Lijstjes',
           groceries: 'Producten',

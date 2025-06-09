@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-const { t } = useI18n() 
-  
+  import { useI18n } from 'vue-i18n'
+  const { t } = useI18n() 
+  const apiUrl = import.meta.env.VITE_API_URL
+  import { setCookie } from './util/cookies.js'
+
+  function clearProvider() {
+    setCookie('oauth_provider', '');
+  }
 </script>
 
 <template>
@@ -20,6 +25,9 @@ const { t } = useI18n()
         </li>
         <li class="nav-item">
           <RouterLink to="/groceries" class="nav-link">{{ $t("titles.groceries") }}</RouterLink>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" @click="clearProvider" :href="`${ apiUrl }/auth/logout`">{{ $t("titles.logout") }}</a>
         </li>
       </ul>
     </div>
