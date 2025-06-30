@@ -38,7 +38,12 @@ async function fetchData() {
       </div> -->
 
       <ul class="list-group"> 
-        <RouterLink v-for="grocery in groceriesList" :key="grocery.id" class="list-group-item" :to="`/groceries/${grocery.id}`">{{ grocery.name }}</RouterLink>
+        <RouterLink v-for="grocery in groceriesList" :key="grocery.id" class="list-group-item d-flex justify-content-between align-items-center" :to="`/groceries/${grocery.id}`">
+          {{ grocery.name }}
+          <span class="badge bg-primary rounded-pill">
+            {{ grocery.entriesCount }}
+          </span>
+      </RouterLink>
       </ul>
 
     </div>
