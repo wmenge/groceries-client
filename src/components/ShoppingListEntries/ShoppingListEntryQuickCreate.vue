@@ -33,7 +33,6 @@ async function saveData() {
   } else {
     shoppingList = await shoppingListResource.save(props.shoppingList);
 
-    //console.log(shoppingList);
     shoppingListCreated = true;
   }
     
@@ -44,8 +43,6 @@ async function saveData() {
   };
 
   let result = await shoppingListEntriesResource.save(shoppingList.id, saveShoppingListEntryDto);
-
-  console.log(result);
 
   if (shoppingListCreated) {
      shoppingList.entries = [ result ];
@@ -71,8 +68,8 @@ async function search(input) {
 }
 
 function handleSubmit(name) {
-  console.log(name);
   shoppingListEntry.value.grocery.name = name;
+  saveData();
 }
 
 </script>
