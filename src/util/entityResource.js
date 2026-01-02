@@ -61,4 +61,9 @@ const shoppingListEntriesResource = {
     remove: removeFromParent,
 }
 
-export { groceryResource, shoppingListResource, shoppingListEntriesResource };
+const openShoppingListEntries = {
+    endpoint: '/shopping-lists/open-entries',
+    getAll: getAll
+}
+
+export { groceryResource, shoppingListResource, shoppingListEntriesResource, openShoppingListEntries };

@@ -1,9 +1,9 @@
 <script setup lang="js">
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { shoppingListResource } from '../../util/entityResource.js';
-import router from '../../router.js';
+import { shoppingListResource, openShoppingListEntries } from '../../util/entityResource.js';
 import ShoppingListEntries from '../ShoppingListEntries/ShoppingListEntries.vue'
+import ShoppingListEntriesSelect from '../ShoppingListEntries/Select/ShoppingListEntriesSelect.vue'
 import ShoppingListEntryQuickCreate from '../ShoppingListEntries/ShoppingListEntryQuickCreate.vue'
 import { useI18n } from 'vue-i18n'
 
@@ -25,7 +25,7 @@ onMounted(() => {
       day: 'numeric',
     };
 
-    shoppingList.value.name = event.toLocaleDateString(undefined, options);
+    shoppingList.value.name = event.toLocaleDateString(undefined, options);    
   }
 })
 
@@ -33,18 +33,7 @@ watch(() => route.params.id, fetchData, { immediate: true })
 
 async function saveData() {
   shoppingList.value = await shoppingListResource.save(shoppingList.value);
-  // Stay in detail if route already has id, otherwise nav to id page
-  //outer.push('/shopping-lists');
-  /*if (!route.params.id) {
-    router.push(`/shopping-lists/${result.id}`);
-  }*/
 }
-
-// function updateList(list) {
-//   console.log("updateList");
-//   shoppingList.value = list
-//   router.push(`/shopping-lists/${list.id}`);
-// }
 
 async function fetchData(id, spinner = true) {
   console.log("ShoppingListDetail -> Fetch data");
@@ -71,8 +60,6 @@ function handleEntryAdded(entry) {
 }
 
 function handleEntryModified(entry) {
-  //shoppingList.value.entries.push(entry);
-
   const indexToReplace = shoppingList.value.entries.findIndex((e) => e.id === entry.id);
   
   if (indexToReplace !== -1) {
@@ -112,7 +99,8 @@ function handleEntryDeleted(entry) {
       {{ $t("titles.add") }}:
       <ShoppingListEntryQuickCreate @entryModified="handleEntryAdded" @listModified="handleListModified" :shoppingList="shoppingList"></ShoppingListEntryQuickCreate>
       <ShoppingListEntries @entryModified="handleEntryModified" @entryDeleted="handleEntryDeleted" :shoppingListEntries="shoppingList.entries"></ShoppingListEntries>
-
+      <ShoppingListEntriesSelect v-if="!shoppingList?.entries?.length" :shoppingList="shoppingList" @listModified="handleListModified"></ShoppingListEntriesSelect>
+    
     </div>
 
   </div>

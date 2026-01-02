@@ -30,11 +30,14 @@ const i18n = createI18n({
         },
         buttons: {
             save: "Save",
-            delete: "Delete"
+            delete: "Delete",
+            moveEntries: 'Transfer to this list'
         },
         messages: {
             created: 'Created by {user} at {time}',
-            modified: 'Modified by {user} at {time}: {changes}'
+            modified: 'Modified by {user} at {time}: {changes}',
+            emptyShoppingList: 'This shopping list is empty...',
+            emptyShoppingListCopyEntries: 'This shopping list is empty, there are {count} groceries from older lists:'
         }
       },
       nl: {
@@ -57,11 +60,14 @@ const i18n = createI18n({
         },
         buttons: {
             save: "Opslaan",
-            delete: "Verwijderen"
+            delete: "Verwijderen",
+            moveEntries: 'Verplaats naar deze lijst'
         },
         messages: {
             created: 'Toegevoegd door {user} op {time}',
-            modified: 'Gewijzigd door {user} op {time}: {changes}'
+            modified: 'Gewijzigd door {user} op {time}: {changes}',
+            emptyShoppingList: 'Dit lijstje is nog leeg...',
+            emptyShoppingListCopyEntries: 'Dit lijstje is nog leeg, er zijn {count} boodschappen uit eerdere lijstjes:'
         }
       }
     }
