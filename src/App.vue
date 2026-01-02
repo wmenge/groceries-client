@@ -27,6 +27,9 @@
           <RouterLink to="/groceries" class="nav-link">{{ $t("titles.groceries") }}</RouterLink>
         </li>
         <li class="nav-item">
+          <a href="https://welbonusgeendata.nl" target="_blank" class="nav-link">{{ $t("titles.loaltycard") }}</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link active" @click="clearProvider" :href="`${ apiUrl }/auth/logout`">{{ $t("titles.logout") }}</a>
         </li>
       </ul>

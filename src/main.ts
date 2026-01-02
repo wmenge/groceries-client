@@ -17,7 +17,8 @@ const i18n = createI18n({
           appTitle: 'Groceries!',
           lists: 'Lists',
           groceries: 'Groceries',
-          add: 'Add'
+          add: 'Add',
+          loaltycard: 'WBGD'
         },
         fieldnames: {
             groceries: {
