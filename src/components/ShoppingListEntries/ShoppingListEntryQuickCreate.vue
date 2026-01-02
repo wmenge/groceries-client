@@ -1,6 +1,6 @@
 <script setup lang="js">
 
-import { ref, onMounted, useTemplateRef } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { shoppingListResource, shoppingListEntriesResource, groceryResource } from '../../util/entityResource.js';
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
@@ -68,8 +68,8 @@ async function search(input) {
 }
 
 function handleSubmit(name) {
-  shoppingListEntry.value.grocery.name = name;
-  saveData();
+  // shoppingListEntry.value.grocery.name = name;
+  // saveData();
 }
 
 </script>
