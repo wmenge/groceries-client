@@ -32,7 +32,7 @@ var resource = {
             }
         }
 
-        console.log(headers);
+        //console.log(headers);
         
         console.debug(resource, method, body);
         return fetch(configuration.baseUrl + configuration.apiUrl + resource, {
