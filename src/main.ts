@@ -39,6 +39,14 @@ const i18n = createI18n({
             modified: 'Modified by {user} at {time}: {changes}',
             emptyShoppingList: 'This shopping list is empty...',
             emptyShoppingListCopyEntries: 'This shopping list is empty, there are {count} groceries from older lists:'
+        },
+        navigation: {
+            shoppingLists: {
+                active: "Active",
+                closed: "Closed",
+                all: "All",
+                new: "Create new"
+            }
         }
       },
       nl: {
@@ -69,6 +77,14 @@ const i18n = createI18n({
             modified: 'Gewijzigd door {user} op {time}: {changes}',
             emptyShoppingList: 'Dit lijstje is nog leeg...',
             emptyShoppingListCopyEntries: 'Dit lijstje is nog leeg, er zijn {count} boodschappen uit eerdere lijstjes:'
+        },
+        navigation: {
+            shoppingLists: {
+                active: "Open",
+                closed: "Afgerond",
+                all: "Alles",
+                new: "Nieuw"
+            }
         }
       }
     }
