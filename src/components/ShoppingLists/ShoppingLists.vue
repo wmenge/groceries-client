@@ -43,17 +43,17 @@ function isClosed(shoppingList) {
       
     <ul class="nav nav-tabs d-flex mb-3">
       <li class="nav-item">
-        <RouterLink class="nav-link" :class="{ active: route.params.state == 'active' }" :to="`/shopping-lists/state/active`">{{ $t("navigation.shoppingLists.active") }}</RouterLink>
+        <RouterLink class="nav-link" :class="{ active: route.params.state == 'active' }" :to="`/shopping-lists/state/active`">{{ $t("shoppingLists.status.active") }}</RouterLink>
       </li>
       <li class="nav-ite">
-        <RouterLink class="nav-link" :class="{ active: route.params.state == 'closed' }" :to="`/shopping-lists/state/closed`">{{ $t("navigation.shoppingLists.closed") }}</RouterLink>
+        <RouterLink class="nav-link" :class="{ active: route.params.state == 'closed' }" :to="`/shopping-lists/state/closed`">{{ $t("shoppingLists.status.closed") }}</RouterLink>
       </li>
       <li class="nav-item">
-        <RouterLink class="nav-link" :class="{ active: !route.params.state || route.params.state == 'all' }" :to="`/shopping-lists/state/all`">{{ $t("navigation.shoppingLists.all") }}</RouterLink>
+        <RouterLink class="nav-link" :class="{ active: !route.params.state || route.params.state == 'all' }" :to="`/shopping-lists/state/all`">{{ $t("shoppingLists.status.all") }}</RouterLink>
       </li>
 
       <li class="nav-item ms-auto">
-        <RouterLink to="/shopping-lists/new" class="btn" type="button"><i class="bi bi-plus-lg"></i> {{ $t("navigation.shoppingLists.new") }}</RouterLink>
+        <RouterLink to="/shopping-lists/new" class="btn" type="button"><i class="bi bi-plus-lg"></i> {{ $t("buttons.new") }}</RouterLink>
       </li>
       <!-- </div> -->
     </ul>
@@ -64,7 +64,9 @@ function isClosed(shoppingList) {
 
     <div v-else-if="!loading">
 
-    <ul class="list-group mb-3"> 
+    <div v-if="!shoppingLists?.data?.length">{{ $t("messages.emptyShoppingListListStatus", { status: $t("shoppingLists.status."+route.params.state) }) }}</div>
+
+    <ul v-else-if="shoppingLists?.data?.length" class="list-group mb-3">
       <RouterLink class="list-group-item d-flex justify-content-between align-items-center" v-for="shoppingList in shoppingLists.data" :key="shoppingList.id" :to="`/shopping-lists/${shoppingList.id}`">
         <span v-bind:class="(isClosed(shoppingList)) ? 'closed' : ''">{{ shoppingList.name }}</span>
         <span class="badge bg-primary rounded-pill">

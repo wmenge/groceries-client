@@ -32,22 +32,24 @@ const i18n = createI18n({
         buttons: {
             save: "Save",
             delete: "Delete",
-            moveEntries: 'Transfer to this list'
+            moveEntries: 'Transfer to this list',
+            new: "Create new"
         },
         messages: {
             created: 'Created by {user} at {time}',
             modified: 'Modified by {user} at {time}: {changes}',
+            emptyShoppingListList: 'No lists found...',
+            emptyShoppingListListStatus: 'No lists found with status "{status}"...',
             emptyShoppingList: 'This shopping list is empty...',
             emptyShoppingListCopyEntries: 'This shopping list is empty, there are {count} groceries from older lists:'
         },
-        navigation: {
-            shoppingLists: {
+        shoppingLists: {
+            status: {
                 active: "Active",
                 closed: "Closed",
-                all: "All",
-                new: "Create new"
+                all: "All"
             }
-        }
+        },
       },
       nl: {
         titles: {
@@ -70,16 +72,19 @@ const i18n = createI18n({
         buttons: {
             save: "Opslaan",
             delete: "Verwijderen",
-            moveEntries: 'Verplaats naar deze lijst'
+            moveEntries: 'Verplaats naar deze lijst',
+            new: "Nieuw..."
         },
         messages: {
             created: 'Toegevoegd door {user} op {time}',
             modified: 'Gewijzigd door {user} op {time}: {changes}',
+            emptyShoppingListList: 'Er zijn nog geen lijstjes...',
+            emptyShoppingListListStatus: 'Er zijn geen lijstjes met status "{status}"...',
             emptyShoppingList: 'Dit lijstje is nog leeg...',
             emptyShoppingListCopyEntries: 'Dit lijstje is nog leeg, er zijn {count} boodschappen uit eerdere lijstjes:'
         },
-        navigation: {
-            shoppingLists: {
+        shoppingLists: {
+            status: {
                 active: "Open",
                 closed: "Afgerond",
                 all: "Alles",
