@@ -6,8 +6,8 @@ function getAll(query) {
     return resource.get(`${this.endpoint}${queryString(query)}`);
 };
 
-function get(id) {
-    return resource.get(`${this.endpoint}/${id}`);
+async function get(id) {
+    return await resource.get(`${this.endpoint}/${id}`);
 };
 
 function save(object) {
@@ -61,9 +61,15 @@ const shoppingListEntriesResource = {
     remove: removeFromParent,
 }
 
+const shoppingListEntriesEventsResource = {
+    parentEndpoint: shoppingListEntriesResource.endpoint,
+    endpoint: `events`,
+	getAll: getAllFromParent,    
+}
+
 const openShoppingListEntries = {
     endpoint: '/shopping-lists/open-entries',
     getAll: getAll
 }
 
-export { groceryResource, shoppingListResource, shoppingListEntriesResource, openShoppingListEntries };
+export { groceryResource, shoppingListResource, shoppingListEntriesResource, openShoppingListEntries, shoppingListEntriesEventsResource };

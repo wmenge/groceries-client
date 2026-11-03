@@ -1,4 +1,5 @@
 import { getCookie } from '../util/cookies.js'
+import { getAccessToken, login, renew } from '@/auth/oidc'
 
 // TODO: use vue style configuration
 var configuration = {
@@ -7,21 +8,26 @@ var configuration = {
 }
 
 var resource = {
-    get(resource) {
-        return this.fetch(resource, "GET", null);
+    async get(resource) {
+        return await this.fetch(resource, "GET", null);
     },
-    post(resource, body) {
-        return this.fetch(resource, "POST", body);
+    async post(resource, body) {
+        return await this.fetch(resource, "POST", body);
     },
-    put(resource, body) {
-        return this.fetch(resource, "PUT", body);
+    async put(resource, body) {
+        return await this.fetch(resource, "PUT", body);
     },
-    delete(resource) {
-        return this.fetch(resource, "DELETE", null);
+    async delete(resource) {
+        return await this.fetch(resource, "DELETE", null);
     },
-    fetch(resource, method, body) {
+    async fetch(resource, method, body) {
         
         var headers = this.headers(body)
+
+        const token = await getAccessToken()
+        if (token !== null) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
 
         if (method != "GET") {
             // try to get laravel csrf token from cookie and add to reqeust header
@@ -32,47 +38,34 @@ var resource = {
             }
         }
 
-        //console.log(headers);
-        
-        console.debug(resource, method, body);
-        return fetch(configuration.baseUrl + configuration.apiUrl + resource, {
-            "headers": headers,
-            "method": method,
-            "body": ((body == null) ? null : JSON.stringify(body)),
-            "mode": "cors",
-            "credentials": "include"
-        }).then(
-            response => {
-                // todo: move to separate event handler
-                if(response.status==401) {
-                    window.location = '/login';
-                    let rejectedPromise = new Promise(function(res, rej) { rej(); });
-                    //rejectedPromise.reject();
-                    return rejectedPromise;
-                }
+        try {
 
-                // todo: move to separate event handler
-                /*if (response.status >= 300) {
-                    response.text().then(text => {
-                        console.log(text);
-                        notificationHelper.danger(`${response.status}: ${response.statusText} ${text}`);
-                    });
-                    let rejectedPromise = new Promise(function(res, rej) { rej(); });
-                    //rejectedPromise.reject();
-                    return rejectedPromise;
-                }*/
-                
-                const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1) {
-                    return response.json()
-                } else {
-                    return response.text()
-                }
-            },
-            () => {
-                // todo: move to separate handler
-                notificationHelper.danger("Can't connect to backend");
+            let response = await fetch(configuration.baseUrl + configuration.apiUrl + resource, {
+                "headers": headers,
+                "method": method,
+                "body": ((body == null) ? null : JSON.stringify(body)),
+                "mode": "cors",
+                "credentials": "include"
             });
+
+            // TOOD: use refresh token
+            if (response.status === 401) {
+                if (response.status === 401) {
+                    login(window.location.pathname + window.location.search)
+                }
+            }
+
+            const contentType = response.headers.get("content-type");
+            
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                return response.json()
+            } else {
+                return response.text()
+            }
+
+        } catch (e) {
+            notificationHelper.danger("Can't connect to backend");
+        }
     },
     headers(body) {
         if (body) {
@@ -87,5 +80,6 @@ var resource = {
         }
     }
 };
+
 
 export default resource;
