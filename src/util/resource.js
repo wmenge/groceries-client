@@ -48,8 +48,20 @@ var resource = {
                 "credentials": "include"
             });
 
-            // TOOD: use refresh token
             if (response.status === 401) {
+
+                //debugger;
+
+                if (await renew()) {
+                    // TODO: Refactor away duplicate fetch call
+                    response = await fetch(configuration.baseUrl + configuration.apiUrl + resource, {
+                        "headers": headers,
+                        "method": method,
+                        "body": ((body == null) ? null : JSON.stringify(body)),
+                        "mode": "cors",
+                        "credentials": "include"
+                    });
+                }
                 if (response.status === 401) {
                     login(window.location.pathname + window.location.search)
                 }
