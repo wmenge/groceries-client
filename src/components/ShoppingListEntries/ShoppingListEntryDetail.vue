@@ -1,7 +1,7 @@
 <script setup lang="js">
 
 import { ref, onMounted } from 'vue'
-import { shoppingListEntriesResource, groceryResource } from '../../util/entityResource.js';
+import { shoppingListEntriesResource, groceryResource, shoppingListEntriesEventsResource } from '../../util/entityResource.js';
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
 import dayjs from 'dayjs';
@@ -10,6 +10,8 @@ const emit = defineEmits(['entryModified', 'entryDeleted'])
 const props = defineProps(['shoppingList', 'shoppingListEntry']);
 const shoppingListEntry = ref({ quantity: 1, grocery: { name: "" } });
 
+const events = ref(null)
+
 onMounted(() => {
 
   if (props.shoppingListEntry) {
@@ -17,6 +19,13 @@ onMounted(() => {
   }
 
 })
+
+async function getEvents() {
+  events.value = await shoppingListEntriesEventsResource.getAll(props.shoppingListEntry.id);
+  console.log(events.value);
+}
+
+defineExpose({ getEvents })
 
 async function saveData() {
 
@@ -107,7 +116,7 @@ function formatChange(obj) {
   </form>
 
   <ul class="list-group"> 
-    <li class="list-unstyled" v-for="event in shoppingListEntry.events" :key="event.id">
+    <li class="list-unstyled" v-for="event in events" :key="event.id">{{ event.id }}
       <small class="text-body-secondary" v-if="event.type == 'CREATE'">{{ $t('messages.created', { user: event?.user?.name, time: formatDate(event?.time) }) }}</small>
         <small class="text-body-secondary" v-if="event.type == 'UPDATE'">{{ $t('messages.modified', { user: event?.user?.name, time: formatDate(event?.time), changes: formatChange(event.changed) }) }}</small>
     </li>

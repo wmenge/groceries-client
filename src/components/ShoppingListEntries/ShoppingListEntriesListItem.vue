@@ -1,12 +1,19 @@
 <script setup lang="js">
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import ShoppingListEntryDetail from '../ShoppingListEntries/ShoppingListEntryDetail.vue'
 import { shoppingListEntriesResource } from '../../util/entityResource.js';
 import * as bootstrap from 'bootstrap'
 const emit = defineEmits(['entryModified', 'entryDeleted'])
 const props = defineProps(['shoppingListEntry']);
 const loading = ref(false);
+
+const childRef = ref()
+
+onMounted(() => {
+  var myCollapsible = document.getElementById(`collapseExample${props.shoppingListEntry.id}`)
+    myCollapsible.addEventListener('shown.bs.collapse', async function () { childRef.value.getEvents() })
+})
 
 function handleEntryModified(entry) {
   var element = document.getElementById(`collapseExample${entry.id}`);
@@ -64,7 +71,7 @@ async function changeStatus() {
     </div>
     <div class="collapse" :id="`collapseExample${props.shoppingListEntry.id}`">
       <hr/>
-      <ShoppingListEntryDetail @entryModified="handleEntryModified" @entryDeleted="handleEntryDeleted" :shoppingListEntry="props.shoppingListEntry"></ShoppingListEntryDetail>
+      <ShoppingListEntryDetail ref="childRef" @entryModified="handleEntryModified" @entryDeleted="handleEntryDeleted" :shoppingListEntry="props.shoppingListEntry"></ShoppingListEntryDetail>
     </div>
   
   </a>
