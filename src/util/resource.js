@@ -49,10 +49,8 @@ var resource = {
             });
 
             if (response.status === 401) {
-
-                //debugger;
-
                 if (await renew()) {
+
                     // TODO: Refactor away duplicate fetch call
                     response = await fetch(configuration.baseUrl + configuration.apiUrl + resource, {
                         "headers": headers,

@@ -1,12 +1,10 @@
 <script setup lang="ts">
   import { useI18n } from 'vue-i18n'
   const { t } = useI18n() 
-  const apiUrl = import.meta.env.VITE_API_URL
-  import { setCookie } from './util/cookies.js'
+  import { useAuth } from '@/composables/useAuth'
+  
+  const { logout } = useAuth()
 
-  function clearProvider() {
-    setCookie('oauth_provider', '');
-  }
 </script>
 
 <template>
@@ -30,7 +28,7 @@
           <a href="https://welbonusgeendata.nl" target="_blank" class="nav-link">{{ $t("titles.loaltycard") }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" @click="clearProvider" :href="`${ apiUrl }/auth/logout`">{{ $t("titles.logout") }}</a>
+          <a href="javascript:;" class="nav-link active" @click="logout()">{{ $t("titles.logout") }}</a>
         </li>
       </ul>
     </div>
@@ -45,7 +43,7 @@
     
 
       <!-- <RouterView/> -->
-      
+
       <router-view v-slot="{ Component }">
   <transition name="slide">
     <component :is="Component" />

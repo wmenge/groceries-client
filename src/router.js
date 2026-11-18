@@ -4,9 +4,10 @@ import GroceryList from './components/Groceries/GroceryList.vue'
 import GroceryDetail from './components/Groceries/GroceryDetail.vue'
 import ShoppingLists from './components/ShoppingLists/ShoppingLists.vue'
 import ShoppingListDetail from './components/ShoppingLists/ShoppingListDetail.vue'
-//import ShoppingListEntries from './components/ShoppingListEntries/ShoppingListEntries.vue'
 import ShoppingListEntryDetail from './components/ShoppingListEntries/ShoppingListEntryDetail.vue'
 import CallbackView from './components/CallbackView.vue'
+import { login } from '@/auth/oidc'
+import { ensureUser } from '@/composables/useAuth'
 
 const routes = [
   { path: '/', component: ShoppingLists },
@@ -34,6 +35,19 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+// Early login
+router.beforeEach(async (to) => {
+  // The one exempt route: guarding the callback would loop it back to the
+  // authorization server before it could redeem the code.
+  if (to.name === 'callback') return true
+
+  if (await ensureUser()) return true
+
+  // Remember where they were headed so the callback can finish the journey.
+  await login(to.fullPath)
+  return false
 })
 
 export default router;
